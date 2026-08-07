@@ -13,6 +13,41 @@ class UserModel {
     );
     return result.rows[0];
   }
+
+  async deleteUser(id) {
+    const result = await pool.query(
+      `
+      DELETE FROM "user"
+      WHERE "id"=$1
+      RETURNING *;
+      `,
+      [id],
+    );
+    return result.rows[0];
+  }
+
+  async getUser(id) {
+    const result = await pool.query(
+      `
+      SELECT * 
+      FROM "user" 
+      WHERE "id"=$1;
+      `,
+      [id],
+    );
+    return result.rows[0];
+  }
+
+  async getAllUsers() {
+    const result = await pool.query(
+      `
+      SELECT * 
+      FROM "user" 
+      ORDER BY "id";
+      `,
+    );
+    return result.rows;
+  }
 }
 
 module.exports = new UserModel();
