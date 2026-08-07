@@ -8,9 +8,11 @@ const pool = require("./configure/neon");
 
 const healthRouter = require("./routes/healthRouter");
 const userRouter = require("./routes/userRouter");
+const loginRouter = require ("./routes/loginRouter")
 
 app.use("/api", healthRouter);
 app.use("/api/user", userRouter);
+app.use("/api", loginRouter);
 
 async function connectDB() {
   try {
