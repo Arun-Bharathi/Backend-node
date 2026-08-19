@@ -1,18 +1,20 @@
 const express = require("express");
+const cors = require("cors");
 const app = express();
 const PORT = 7200;
 
 app.use(express.json());
+app.use(cors());
 
 const pool = require("./configure/neon");
 
 const healthRouter = require("./routes/healthRouter");
 const userRouter = require("./routes/userRouter");
-const loginRouter = require ("./routes/loginRouter")
+const loginRouter = require("./routes/loginRouter");
 
 app.use("/api", healthRouter);
 app.use("/api/user", userRouter);
-app.use("/api", loginRouter);
+app.use("/api/auth", loginRouter);
 
 async function connectDB() {
   try {
@@ -24,6 +26,12 @@ async function connectDB() {
 }
 
 connectDB();
+
+app.use(
+  cors({
+    origin: "http://localhost:7000",
+  }),
+);
 
 app.get("/", (req, res) => {
   res.send("Server is up and running ");
