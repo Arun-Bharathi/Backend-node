@@ -2,11 +2,16 @@ const userModel = require("../models/userModel");
 
 async function createUser(req, res) {
   try {
-    const { name, age } = req.body;
+    const { first_name, last_name, mobile_number, email, role, status } =
+      req.body;
 
     const result = await userModel.createUser({
-      name,
-      age,
+      first_name,
+      last_name,
+      mobile_number,
+      email,
+      role,
+      status,
     });
     return res.status(200).json({
       success: true,

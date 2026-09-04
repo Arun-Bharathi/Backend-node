@@ -1,15 +1,15 @@
 const pool = require("../configure/neon");
 
 class UserModel {
-  async createUser({ name, age }) {
+  async createUser({ first_name, last_name, mobile_number, email, role, status }) {
     const result = await pool.query(
       `
         INSERT INTO "user"
-        ("name", "age")
-        VALUES ($1, $2)
+        ("first_name", "last_name", "mobile_number", "email", "role", "status")
+        VALUES ($1, $2, $3, $4, $5, $6)
         RETURNING *;
       `,
-      [name, age],
+      [first_name, last_name, mobile_number, email, role, status],
     );
     return result.rows[0];
   }
