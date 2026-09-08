@@ -52,6 +52,37 @@ async function deleteUser(req, res) {
   }
 }
 
+async function updateUser(req, res) {
+  try {
+    const { id, first_name, last_name, mobile_number, email, role, status } =
+      req.body;
+    const result = await userModel.updateUser({
+      id,
+      first_name,
+      last_name,
+      mobile_number,
+      email,
+      role,
+      status,
+    });
+
+    if (!result) {
+      return res.status(404).json({
+        success: false,
+        message: "User Not Found",
+      });
+    }
+
+    return res.status(200).json({ success: true, data: result });
+  } catch (error) {
+    console.error("Update User Error:", error.message);
+    return res.status(500).json({
+      success: false,
+      message: "internal server error",
+    });
+  }
+}
+
 async function getUser(req, res) {
   try {
     const { id } = req.body;
@@ -81,7 +112,8 @@ async function getUser(req, res) {
 
 async function getAllUsers(req, res) {
   try {
-    const result = await userModel.getAllUsers();
+    const { input, page, size } = req.body;
+    const result = await userModel.getAllUsers({ input, page, size });
 
     return res.status(200).json({
       success: true,
@@ -97,4 +129,4 @@ async function getAllUsers(req, res) {
   }
 }
 
-module.exports = { createUser, deleteUser, getUser, getAllUsers };
+module.exports = { createUser, deleteUser, updateUser, getUser, getAllUsers };
